@@ -44,9 +44,9 @@
                 <span>{{ item.name }}</span>
               </template>
               <el-menu-item
-                index="1-1"
                 v-for="(sub, i) in item.children"
                 :key="i"
+                index="1-1"
               >
                 <template slot="title">
                   <i :class="sub.icon"></i>

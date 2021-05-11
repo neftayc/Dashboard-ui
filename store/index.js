@@ -7,7 +7,7 @@ export const state = () => ({
   itemsMenu: [
     {
       name: 'Administración del Sistema',
-      path: '/',
+      path: 'system-administration',
       icon: 'el-icon-s-grid',
       children: [
         {
