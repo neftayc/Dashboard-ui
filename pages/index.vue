@@ -10,7 +10,7 @@
       </el-col>
       <el-col :xs="24" :md="8" class="form">
         <form autocomplete="off" style="max-width: 320px" class="mx-auto mt-10">
-          <h1 class="title">Welcome to Vuexy! 👋</h1>
+          <h1 class="title">Welcome to SGA! 👋</h1>
 
           <p>Please sign-in to your account and start the adventure</p>
           <label>Email</label>
