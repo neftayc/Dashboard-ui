@@ -7,25 +7,65 @@ export const state = () => ({
   itemsMenu: [
     {
       name: 'Administración del Sistema',
-      path: '/',
+      path: 'system-administration',
       icon: 'el-icon-s-grid',
       children: [
         {
           name: 'Aplicaciones',
-          path: '/',
-          icon: 'el-icon-s-management',
+          path: '/apps',
+          icon: 'el-icon-s-platform',
+        },
+        {
+          name: 'Avisos Profesores',
+          path: '/notifications-teachers',
+          icon: 'el-icon-s-check',
+        },
+        {
+          name: 'Configuración',
+          path: '/settings',
+          icon: 'el-icon-setting',
+        },
+        {
+          name: 'Control de Versiones',
+          path: '/version-control',
+          icon: 'el-icon-loading',
         },
       ],
     },
     {
       name: 'Administración General',
-      path: '/',
+      path: '/general-administration',
       icon: 'el-icon-menu',
       children: [
         {
           name: 'Áreas de Conocimiento',
-          path: '/',
-          icon: 'el-icon-s-management',
+          path: '/general-administration/knowledge-areas',
+          icon: 'el-icon-magic-stick',
+        },
+        {
+          name: 'Áreas de Impartición',
+          path: '/general-administration/teaching-areas',
+          icon: 'el-icon-s-platform',
+        },
+        {
+          name: 'Aulas',
+          path: '/general-administration/classrooms',
+          icon: 'el-icon-school',
+        },
+        {
+          name: 'Departamentos',
+          path: '/general-administration/departments',
+          icon: 'el-icon-notebook-1',
+        },
+        {
+          name: 'Entidades',
+          path: '/general-administration/entities',
+          icon: 'el-icon-s-ticket',
+        },
+        {
+          name: 'Temas',
+          path: '/general-administration/themes',
+          icon: 'el-icon-s-open',
         },
       ],
     },

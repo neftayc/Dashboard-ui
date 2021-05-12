@@ -65,5 +65,10 @@ export default {
       ],
     }
   },
+  methods: {
+    handleClick() {
+      console.log('click')
+    },
+  },
 }
 </script>
