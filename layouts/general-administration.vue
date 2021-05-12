@@ -86,6 +86,7 @@
 <script>
 import { mapState } from 'vuex'
 export default {
+  middleware: ['auth'],
   data: () => ({
     defaultActive: '1',
     isCollapse: false,
