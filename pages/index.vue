@@ -14,9 +14,7 @@
     </el-table-column>
     <el-table-column fixed="right" label="Operaciones" min-width="120">
       <template slot-scope>
-        <el-button @click="handleClick" type="text" size="small"
-          >Detalle</el-button
-        >
+        <el-button type="text" size="small">Detalle</el-button>
         <el-button type="text" size="small">Editar</el-button>
       </template>
     </el-table-column>
@@ -25,11 +23,6 @@
 
 <script>
 export default {
-  methods: {
-    handleClick() {
-      console.log('click')
-    },
-  },
   data() {
     return {
       tableData: [
