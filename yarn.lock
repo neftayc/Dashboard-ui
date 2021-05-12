@@ -3759,6 +3759,11 @@ duplexify@^3.4.2, duplexify@^3.6.0:
     readable-stream "^2.0.0"
     stream-shift "^1.0.0"
 
+ed-grid@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/ed-grid/-/ed-grid-3.0.2.tgz#f75e95e16153ef5437f8323ad53a31011f4b1501"
+  integrity sha512-2wFXy42Z0YAi6yZOB/9cajGtQf4n/ueUKaHJaeQeyjoPQWZNBBG1x1cifobMGXzQPnfMfP2wYrhvdcSACmU1ag==
+
 ee-first@1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/ee-first/-/ee-first-1.1.1.tgz#590c61156b0ae2f4f0255732a158b266bc56b21d"
