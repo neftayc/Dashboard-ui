@@ -9,26 +9,36 @@
         ></el-image>
       </el-col>
       <el-col :xs="24" :md="8" class="form">
-        <form autocomplete="off" style="max-width: 320px" class="mx-auto mt-10">
+        <form
+          autocomplete="off"
+          style="max-width: 320px"
+          class="mx-auto mt-10"
+          v-on:submit.prevent
+        >
           <h1 class="title">Welcome to SGA! 👋</h1>
 
           <p>Please sign-in to your account and start the adventure</p>
-          <label>Email</label>
+          <div class="s-pb-1">
+            <small>Email</small>
+          </div>
           <el-input
+            v-model="user.email"
             label="Email"
             placeholder="Email"
-            v-model="user.email"
+            @keypress.enter="login"
           ></el-input>
 
-          <div>
-            <label>Password</label>
+          <div class="password s-pt-3 s-pb-1">
+            <small>Password</small>
             <small><nuxt-link to="/">Forgot Password?</nuxt-link></small>
           </div>
           <el-input
+            v-model="user.password"
+            class="s-pb-2"
             label="Password"
             placeholder="Password"
-            v-model="user.password"
             show-password
+            @keypress.enter="login"
           ></el-input>
 
           <el-button
@@ -98,6 +108,11 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
+
+    .password {
+      display: flex;
+      justify-content: space-between;
+    }
   }
 }
 </style>
