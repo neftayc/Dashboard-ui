@@ -16,7 +16,9 @@
         <p class="side-dashboard--body-name">User name</p>
         <p class="side-dashboard--body-inst">Institución</p>
         <div class="side-dashboard--body-actions">
-          <el-button type="warning" round>Cerrar Sesión</el-button>
+          <el-button type="warning" round @click="$auth.logout()">
+            Cerrar Sesión</el-button
+          >
           <span>Cambiar contraseña</span>
         </div>
       </div>

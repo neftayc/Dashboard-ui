@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="login">
     <Nuxt />
   </div>
 </template>
@@ -9,3 +9,9 @@ export default {
   middleware: 'login',
 }
 </script>
+
+<style scoped>
+.login {
+  min-height: 100vh;
+}
+</style>
