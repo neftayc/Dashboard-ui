@@ -1,5 +1,5 @@
 <template>
-  <div class="ed-grid rows-gap s-gap-4 s-grid-12">
+  <div class="ed-grid rows-gap m-gap-4 s-grid-12">
     <div
       v-for="(menu, i) in itemsMenu"
       :key="i"
@@ -69,6 +69,20 @@ export default {
     line-height: 1.2;
     font-size: 0.9rem;
     color: #5e5873;
+  }
+}
+.main-dashboard-movil {
+  .menu-dashboard-card {
+    height: 120px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    &--content-icon {
+      width: 40px;
+      height: 40px;
+    }
+    &--icon {
+      font-size: 20px;
+    }
   }
 }
 </style>

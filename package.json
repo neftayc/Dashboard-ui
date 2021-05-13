@@ -27,7 +27,8 @@
     "@nuxtjs/pwa": "^3.3.5",
     "core-js": "^3.9.1",
     "element-ui": "^2.15.1",
-    "nuxt": "^2.15.4"
+    "nuxt": "^2.15.4",
+    "nuxt-breakpoints": "^1.1.9"
   },
   "devDependencies": {
     "@commitlint/cli": "^12.0.1",

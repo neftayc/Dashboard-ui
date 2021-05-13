@@ -34,8 +34,20 @@ export default {
     // https://go.nuxtjs.dev/pwa
     '@nuxtjs/pwa',
     '@nuxtjs/auth-next',
+    'nuxt-breakpoints',
   ],
-
+  breakpoints: {
+    // default options
+    xs: 0,
+    sm: 720,
+    md: 1280,
+    lg: 1440,
+    xl: 1920,
+    options: {
+      polyfill: true,
+      throttle: 200,
+    },
+  },
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     baseURL: 'https://examapi.iase-certifications.com/', // Used as fallback if no runtime config is provided
