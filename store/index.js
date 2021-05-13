@@ -12,29 +12,29 @@ export const state = () => ({
       children: [
         {
           name: 'Aplicaciones',
-          path: '/apps',
+          path: '/system-administration/apps',
           icon: 'el-icon-s-platform',
         },
         {
           name: 'Avisos Profesores',
-          path: '/notifications-teachers',
+          path: '/system-administration/notifications-teachers',
           icon: 'el-icon-s-check',
         },
         {
           name: 'Configuración',
-          path: '/settings',
+          path: '/system-administration/settings',
           icon: 'el-icon-setting',
         },
         {
           name: 'Control de Versiones',
-          path: '/version-control',
+          path: '/system-administration/version-control',
           icon: 'el-icon-loading',
         },
       ],
     },
     {
       name: 'Administración General',
-      path: '/general-administration',
+      path: '/general-administration/knowledge-areas',
       icon: 'el-icon-menu',
       children: [
         {

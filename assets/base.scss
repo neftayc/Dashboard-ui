@@ -1,4 +1,9 @@
+$dev: false;
+
 @import '~ed-grid/ed-grid';
+:root {
+  --primary: rgb(0, 128, 128);
+}
 body {
-  background: #edf1f7;
+  background: #f8f8f8;
 }

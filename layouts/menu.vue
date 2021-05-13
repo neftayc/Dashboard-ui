@@ -1,36 +1,44 @@
 <template>
-  <el-container>
-    <el-main class="main-dashboard">
+  <div class="ed-grid s-grid-12 xl-grid-9 s-cross-center full">
+    <div class="s-cols-8 lg-cols-9 xl-cols-7 main-dashboard s-pxy-4">
       <Nuxt />
-    </el-main>
-    <el-aside width="300px" class="bg-primary side-dashboard">
+    </div>
+    <div class="s-cols-4 lg-cols-3 xl-cols-2 bg-primary side-dashboard">
       <div class="side-dashboard--header">
-        <span>Logo</span>
+        <el-avatar
+          style="background: transparent"
+          shape="square"
+          :size="130"
+          :src="require('@/assets/images/logo.png')"
+        ></el-avatar>
+        <h2 style="font-size: 1rem; color: black" class="s-pt-2">
+          Universidad de Madrid
+        </h2>
       </div>
       <div class="side-dashboard--body">
-        <img
-          class="side-dashboard--body-image"
+        <el-avatar
+          style="background: transparent"
+          :size="80"
           :src="require('@/assets/images/user.png')"
-          alt="User"
-        />
-        <p class="side-dashboard--body-name">User name</p>
-        <p class="side-dashboard--body-inst">Institución</p>
-        <div class="side-dashboard--body-actions">
-          <el-button type="warning" round @click="$auth.logout()">
-            Cerrar Sesión</el-button
-          >
-          <span>Cambiar contraseña</span>
+        ></el-avatar>
+        <div class="side-dashboard--body-name">Rosbel Ccana</div>
+        <p class="side-dashboard--body-inst">rusbel.ccana@gmail.com</p>
+        <div class="side-dashboard--body-actions s-pt-4">
+          <el-button type="primary" round @click="$auth.logout()">
+            Cerrar Sesión
+          </el-button>
+          <span>(Cambiar contraseña)</span>
         </div>
       </div>
       <div class="side-dashboard--footer"></div>
-    </el-aside>
-  </el-container>
+    </div>
+  </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 export default {
-  middleware: ['auth'],
+  middleware: [],
 
   data: () => ({
     defaultActive: '1',
@@ -41,49 +49,48 @@ export default {
 }
 </script>
 <style lang="scss">
-html,
-* {
-  padding: 0;
-  margin: 0;
-}
-.bg-primary {
-  background-color: #545c64;
-}
 .main-dashboard {
-  background-image: url('./assets/images/fondo.jpg');
-  background-size: cover;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
   width: 100%;
-  height: 100vh;
+  overflow-y: auto;
+  max-height: 100vh;
   position: relative;
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: rgba(0, 0, 0, 0.5);
+
+  /* width */
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  /* Track */
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+
+  /* Handle */
+  &::-webkit-scrollbar-thumb {
+    background: rgb(207, 207, 207);
+    border-radius: 4px;
+    height: 100px;
+  }
+
+  /* Handle on hover */
+  &::-webkit-scrollbar-thumb:hover {
+    background: rgb(143, 143, 143);
+    border-radius: 4px;
   }
 }
 
 .side-dashboard {
-  background: linear-gradient(to bottom right, #222b45, #000);
-  box-shadow: 0 0.5rem 1rem 0 #1a1f33;
+  background: linear-gradient(to bottom right, var(--primary), #1a1f33);
+  box-shadow: 0 0.5rem 1rem 0 #083d3d;
+  margin-left: auto;
   color: #fff;
-  font-family: Open Sans, sans-serif;
-  font-size: 0.9375rem;
-  font-weight: 400;
-  line-height: 1.25rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   text-align: center;
+  width: 100%;
+  min-height: 100vh;
+  max-height: 100vh;
   &--header {
     padding: 50px 0;
     span {
@@ -96,7 +103,7 @@ html,
       height: auto;
     }
     &-name {
-      font-size: 1.375rem;
+      font-size: 1.2rem;
       font-weight: 700;
       line-height: 2rem;
     }
@@ -110,7 +117,7 @@ html,
       margin-top: 30px;
       & > span {
         display: block;
-        margin-top: 10px;
+        margin-top: 5px;
         font-size: 0.6rem;
         line-height: 1.25rem;
       }

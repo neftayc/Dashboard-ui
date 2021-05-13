@@ -2,7 +2,7 @@
   <div>
     <el-card style="border-radius: 5px">
       <div>
-        <el-input placeholder="Search" v-model="search"></el-input>
+        <el-input v-model="search" placeholder="Search"></el-input>
       </div>
 
       <el-table
@@ -53,8 +53,8 @@
 <script>
 import crud from '@/mixins/crud-admin-g'
 export default {
-  layout: 'general-administration',
   mixins: [crud],
+  layout: 'general-administration',
   computed: {
     url() {
       return 'https://api.nuxtjs.dev/posts'

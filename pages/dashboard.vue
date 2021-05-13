@@ -1,19 +1,18 @@
 <template>
-  <el-container>
-    <el-row :gutter="20" align="center">
-      <el-col
-        v-for="(menu, i) in itemsMenu"
-        :key="i"
-        :span="6"
-        style="padding-top: 10px; padding-bottom: 10px; display: flex"
-      >
-        <div class="menu-dashboard-card" @click="goRouter(menu)">
+  <div class="ed-grid rows-gap s-gap-4 s-grid-12">
+    <div
+      v-for="(menu, i) in itemsMenu"
+      :key="i"
+      class="s-cols-12 m-cols-6 lg-cols-4 xl-cols-3"
+    >
+      <div class="menu-dashboard-card" @click="goRouter(menu)">
+        <div class="menu-dashboard-card--content-icon">
           <i :class="menu.icon" class="menu-dashboard-card--icon"></i>
-          <div class="menu-dashboard-card--name">{{ menu.name }}</div>
         </div>
-      </el-col>
-    </el-row>
-  </el-container>
+        <h2 class="menu-dashboard-card--name">{{ menu.name }}</h2>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -33,7 +32,6 @@ export default {
 }
 </script>
 <style lang="scss">
-$height: calc(50vh - 40px);
 .menu-dashboard-card {
   text-align: center;
   display: flex;
@@ -41,24 +39,36 @@ $height: calc(50vh - 40px);
   justify-items: center;
   justify-content: center;
   width: 100%;
-  background: #000;
-  opacity: 0.7;
-  border: 0 solid transparent;
-  border-radius: 0.35rem;
-  box-shadow: 0 0.5rem 1rem 0 #1a1f33;
-  color: #fff;
-  font-family: Open Sans, sans-serif;
-  font-size: 0.9375rem;
-  font-weight: 400;
-  line-height: 1.25rem;
-  height: $height;
+  height: calc(45vh - 0.8rem);
+  background: #fff;
+  border: thin solid #0b2c2c05;
+  box-shadow: 0 40px 35px -30px #0f38385c;
+  border-radius: 0.428rem;
+  background-clip: border-box;
   cursor: pointer;
   &--icon {
-    font-size: 50px;
+    font-size: 40px;
+  }
+  &--content-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    text-align: center;
+    justify-content: center;
+    margin-right: auto;
+    margin-left: auto;
+    background-color: rgb(0, 128, 128, 0.12);
+    color: var(--primary);
+    margin-bottom: 15px;
   }
   &--name {
-    margin-top: 10px;
-    font-weight: 500;
+    font-weight: 600;
+    line-height: 1.2;
+    font-size: 0.9rem;
+    color: #5e5873;
   }
 }
 </style>

@@ -15,9 +15,9 @@
           <p>Please sign-in to your account and start the adventure</p>
           <label>Email</label>
           <el-input
+            v-model="user.email"
             label="Email"
             placeholder="Email"
-            v-model="user.email"
           ></el-input>
 
           <div>
@@ -25,9 +25,9 @@
             <small><nuxt-link to="/">Forgot Password?</nuxt-link></small>
           </div>
           <el-input
+            v-model="user.password"
             label="Password"
             placeholder="Password"
-            v-model="user.password"
             show-password
           ></el-input>
 
