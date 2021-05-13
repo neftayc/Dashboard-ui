@@ -1,7 +1,7 @@
 export default {
   asyncData({ query }) {
     return {
-      page: parseInt(query.page) ?? 1,
+      page: query.page ? parseInt(query.page) : 1,
       search: query.search ?? '',
     }
   },
@@ -23,11 +23,19 @@ export default {
     items: [],
     item: {},
     loading: false,
+    size: 10,
     dLoading: false,
     dialog: false,
   }),
   watch: {
     '$route.query': '$fetch',
+    search(v) {
+      if (v) {
+        this.$router.push({ query: { search: v, page: this.page ?? 1 } })
+      } else {
+        this.$router.push({ query: { page: this.page ?? 1 } })
+      }
+    },
   },
   methods: {
     async save() {

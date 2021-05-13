@@ -2,94 +2,155 @@
   <div class="ed-container full">
     <div class="ed-item s-px-0">
       <el-card style="border-radius: 5px">
-        <el-table :data="tableData" style="width: 100%" stripe>
-          <el-table-column label="#" width="50">
-            <template slot-scope="scope">
-              {{ tableData.indexOf(scope.row) + 1 }}
-            </template>
+        <p>Crud demo</p>
+        <div class="s-mb-2 header">
+          <el-button type="primary" @click="dialog = true">Agregar</el-button>
+
+          <div class="search">
+            <small class="s-pr-2">Search</small>
+            <el-input
+              v-model="search"
+              style="max-width: 200px"
+              placeholder="Search"
+            ></el-input>
+          </div>
+        </div>
+
+        <el-table
+          v-loading="$fetchState.pending"
+          :data="items"
+          style="width: 100%"
+          height="450"
+          :default-sort="{ prop: 'height', order: 'descending' }"
+        >
+          <el-table-column fixed prop="updatedAt" label="Fecha" min-width="150">
           </el-table-column>
-          <el-table-column label="Nombre">
-            <template slot-scope="scope">
-              <span style="margin-left: 5px">{{ scope.row.name }}</span>
-            </template>
+          <el-table-column prop="title" label="Nombre" min-width="120">
           </el-table-column>
-          <el-table-column label="Fecha Registro">
-            <template slot-scope="scope">
-              <i class="el-icon-time"></i>
-              <span style="margin-left: 5px">{{ scope.row.date }}</span>
-            </template>
+          <el-table-column prop="countries" label="Estado" min-width="120">
+          </el-table-column>
+          <el-table-column prop="continent" label="Ciudad" min-width="120">
           </el-table-column>
           <el-table-column
-            label="Acción"
-            width="200"
-            style="text-align: center"
+            prop="height"
+            label="Código postal"
+            sortable
+            min-width="120"
+          >
+          </el-table-column>
+          <el-table-column
+            fixed="right"
+            align="center"
+            label="Acciones"
+            min-width="100"
           >
             <template slot-scope="scope">
               <el-button
-                size="mini"
-                @click="handleEdit(scope.$index, scope.row)"
-                >Editar</el-button
-              >
+                size="small"
+                type="primary"
+                icon="el-icon-edit"
+                circle
+                @click="dialog = true"
+              ></el-button>
               <el-button
-                size="mini"
+                size="small"
                 type="danger"
-                @click="handleDelete(scope.$index, scope.row)"
-                >Eliminar</el-button
-              >
+                icon="el-icon-delete"
+                circle
+                @click="deleteItem(scope.row.id)"
+              ></el-button>
             </template>
           </el-table-column>
         </el-table>
+
+        <div class="s-pt-3 footer">
+          <div class="size">
+            <small class="s-pr-1">Rows per page</small>
+            <el-select v-model="size" style="width: 70px">
+              <el-option label="10" value="10"></el-option>
+              <el-option label="20" value="20"></el-option>
+              <el-option label="30" value="30"></el-option>
+            </el-select>
+            <small class="s-pl-1"> Total 110</small>
+          </div>
+          <el-pagination
+            v-model="page"
+            small
+            layout="prev, pager, next"
+            :total="50"
+            :current-page="page"
+            @current-change="currentChange"
+          >
+          </el-pagination>
+        </div>
+
+        <el-dialog
+          title="Shipping address"
+          :visible.sync="dialog"
+          :close-on-click-modal="false"
+        >
+          <el-form :model="form">
+            <el-form-item label="Promotion name" :label-width="formLabelWidth">
+              <el-input v-model="item.name" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="Zones" :label-width="formLabelWidth">
+              <el-select
+                v-model="item.region"
+                placeholder="Please select a zone"
+              >
+                <el-option label="Zone No.1" value="shanghai"></el-option>
+                <el-option label="Zone No.2" value="beijing"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-form>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="dialog = false">Cancelar</el-button>
+            <el-button
+              type="primary"
+              :loading="loading"
+              @click="dialog = false"
+            >
+              Guardar
+            </el-button>
+          </span>
+        </el-dialog>
       </el-card>
     </div>
   </div>
 </template>
 
 <script>
+import crud from '@/mixins/crud-admin-g'
 export default {
+  mixins: [crud],
   layout: 'general-administration',
-  data: () => ({
-    tableData: [
-      {
-        date: '2016-05-03',
-        name: 'Agencias Y Sociedades De Valores',
-      },
-      {
-        date: '2016-05-02',
-        name: '	Análisis Fundamental',
-      },
-      {
-        date: '2016-05-04',
-        name: 'Análisis Técnico',
-      },
-      {
-        date: '2016-05-01',
-        name: 'Areas de Conocimiento General',
-      },
-      {
-        date: '2016-05-01',
-        name: 'Aspectos Fiscales del Sector Financiero',
-      },
-      {
-        date: '2016-05-01',
-        name: '	Aspectos Legales del Sector Financiero',
-      },
-      {
-        date: '2016-05-01',
-        name: '	Auditoria',
-      },
-      {
-        date: '2016-05-01',
-        name: 'Banca de Empresas',
-      },
-      {
-        date: '2016-05-01',
-        name: 'BIG DATA',
-      },
-      {
-        date: '2016-05-01',
-        name: 'Cambio Climático',
-      },
-    ],
-  }),
+  computed: {
+    url() {
+      return 'https://api.nuxtjs.dev/posts'
+    },
+  },
 }
 </script>
+<style scoped lang="scss">
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .search {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .size {
+    display: flex;
+    align-items: center;
+  }
+}
+</style>
