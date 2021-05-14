@@ -14,7 +14,7 @@ export default {
   css: ['element-ui/lib/theme-chalk/index.css', '@/assets/base.scss'],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: ['@/plugins/element-ui'],
+  plugins: ['@/plugins/element-ui', '@/plugins/axios'],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -50,7 +50,7 @@ export default {
   },
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-    baseURL: 'https://examapi.iase-certifications.com/', // Used as fallback if no runtime config is provided
+    baseURL: 'https://examapi2.iase-certifications.com/', // Used as fallback if no runtime config is provided
   },
   // PWA module configuration: https://go.nuxtjs.dev/pwa
   pwa: {

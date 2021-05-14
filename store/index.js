@@ -130,4 +130,10 @@ export const state = () => ({
       ],
     },
   ],
+
+  notification: {
+    title: '',
+    message: '',
+    type: 'SUCCESS',
+  },
 })
