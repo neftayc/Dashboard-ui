@@ -2,9 +2,10 @@
   <div>
     <BasicCrud
       v-model="search"
+      title="Áreas de Conocimiento"
       :items="items"
       :loading="$fetchState.pending"
-      :total="items.length"
+      :total="pagination.num_results || 0"
       @add="dialog = true"
       @edit="editItem($event.row)"
       @delete="deleteItem($event.row.id)"
@@ -21,8 +22,10 @@
           v-model="page"
           small
           layout="prev, pager, next"
-          :total="50"
+          :total="pagination.num_results || 0"
+          :page-size="pagination.page_size || 0"
           :current-page="page"
+          :pager-count="5"
           @current-change="currentChange"
         >
         </el-pagination>
@@ -36,32 +39,19 @@
         </el-select>
       </template>
       <template #columns>
-        <el-table-column prop="title" label="Nombre" />
-        <el-table-column prop="countries" label="Estado" min-width="120" />
-        <el-table-column prop="continent" label="Ciudad" min-width="120" />
-        <el-table-column
-          prop="height"
-          label="Código postal"
-          sortable
-          min-width="140"
-        />
+        <el-table-column prop="name" label="Nombre" />
       </template>
     </BasicCrud>
 
     <el-dialog
-      title="Shipping address"
+      :title="`${item.id ? 'Editando' : 'Creando'} Área`"
       :visible.sync="dialog"
       :close-on-click-modal="false"
+      @close="item = {}"
     >
       <el-form :model="item">
         <el-form-item label="Promotion name">
           <el-input v-model="item.name" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="Zones">
-          <el-select v-model="item.region" placeholder="Please select a zone">
-            <el-option label="Zone No.1" value="shanghai"></el-option>
-            <el-option label="Zone No.2" value="beijing"></el-option>
-          </el-select>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -83,7 +73,7 @@ export default {
   layout: 'general-administration',
   computed: {
     url() {
-      return 'https://api.nuxtjs.dev/posts'
+      return 'master/knowledge-areas/'
     },
   },
 }

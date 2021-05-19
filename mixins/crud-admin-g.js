@@ -9,14 +9,19 @@ export default {
     }
   },
   async fetch() {
-    this.items = await this.$axios
+    const { pagination, results } = await this.$axios
       .get(this.url, {
         params: {
           page: this.page,
+          page_size: this.size || 10,
           search: this.search,
         },
       })
       .then((x) => x.data)
+      .catch(() => null)
+
+    this.items = results || []
+    this.pagination = pagination || {}
   },
   fetchOnServer: false,
   data: () => ({
@@ -76,7 +81,7 @@ export default {
       this.loading = true
       if (this.item.id) {
         await this.$axios
-          .put(`${this.url}/${this.item.id}`, this.item)
+          .put(`${this.url}${this.item.id}`, this.item)
           .then(() => {
             this.dialog = false
             this.clear()
@@ -105,7 +110,7 @@ export default {
       )
         .then(async () => {
           await this.$axios
-            .delete(`${this.url}/${id}`)
+            .delete(`${this.url}${id}`)
             .then(() => {
               this.$fetch()
             })

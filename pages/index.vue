@@ -60,8 +60,8 @@ export default {
   layout: 'login',
   data: () => ({
     user: {
-      email: '',
-      password: '',
+      email: 'a@a.com',
+      password: '123',
     },
     hasVisiblePassword: false,
     loading: false,

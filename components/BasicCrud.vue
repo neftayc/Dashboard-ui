@@ -22,6 +22,7 @@
         align="center"
         label="Acciones"
         min-width="100"
+        width="100"
       >
         <template slot-scope="scope">
           <el-button

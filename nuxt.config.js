@@ -50,7 +50,7 @@ export default {
   },
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-    baseURL: 'https://examapi2.iase-certifications.com/', // Used as fallback if no runtime config is provided
+    baseURL: 'https://sga-api.exponential-institute.com/', // Used as fallback if no runtime config is provided
   },
   // PWA module configuration: https://go.nuxtjs.dev/pwa
   pwa: {
@@ -66,6 +66,7 @@ export default {
       callback: '/',
       home: '/dashboard',
     },
+    watchLoggedIn: true,
     strategies: {
       local: {
         token: {
@@ -75,11 +76,11 @@ export default {
         },
         user: {
           property: false,
-          // autoFetch: true
+          autoFetch: true,
         },
         endpoints: {
           login: { url: 'auth/token/', method: 'post' },
-          user: { url: 'api/user/info/', method: 'get' },
+          user: { url: 'constants/entities/', method: 'get' },
         },
       },
     },
