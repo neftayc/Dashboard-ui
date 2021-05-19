@@ -155,7 +155,7 @@
 <script>
 import { mapState } from 'vuex'
 export default {
-  middleware: [],
+  middleware: ['auth'],
 
   data: () => ({
     defaultActive: '1',
