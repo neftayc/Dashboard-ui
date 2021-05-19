@@ -2,7 +2,7 @@
   <div>
     <BasicCrud
       v-model="search"
-      title="Áreas de Enseñanza"
+      title="Temas"
       :items="items"
       :loading="$fetchState.pending"
       :total="pagination.num_results || 0"
@@ -44,15 +44,27 @@
     </BasicCrud>
 
     <el-dialog
-      :title="`${item.id ? 'Editando' : 'Creando'} Área`"
+      :title="`${item.id ? 'Editando' : 'Creando'} Tema`"
       :visible.sync="dialog"
       :close-on-click-modal="false"
       @close="item = {}"
     >
       <el-form :model="item">
-        <el-form-item label="Nombre">
-          <el-input v-model="item.name" autocomplete="off"></el-input>
+        <el-form-item label="Nombre*">
+          <el-input v-model="item.name"></el-input>
         </el-form-item>
+        <el-row class="mt-10" :gutter="20">
+          <el-col :xs="24" :md="12">
+            <el-form-item label="Nombre abreviado">
+              <el-input v-model="item.abbreviated_name"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :xs="24" :md="12">
+            <el-form-item label="Duración">
+              <el-input v-model="item.duration" type="number"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialog = false">Cancelar</el-button>
@@ -73,7 +85,7 @@ export default {
   layout: 'general-administration',
   computed: {
     url() {
-      return 'master/teaching-areas/'
+      return 'master/topics/'
     },
   },
 }
