@@ -50,7 +50,7 @@
       @close="item = {}"
     >
       <el-form :model="item">
-        <el-form-item label="Promotion name">
+        <el-form-item label="Nombre">
           <el-input v-model="item.name" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>

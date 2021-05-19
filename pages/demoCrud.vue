@@ -2,7 +2,7 @@
   <div>
     <BasicCrud
       v-model="search"
-      title="Áreas de Conocimiento"
+      title="Áreas de Enseñanza"
       :items="items"
       :loading="$fetchState.pending"
       :total="pagination.num_results || 0"
@@ -50,7 +50,7 @@
       @close="item = {}"
     >
       <el-form :model="item">
-        <el-form-item label="Promotion name">
+        <el-form-item label="Nombre">
           <el-input v-model="item.name" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
@@ -73,7 +73,7 @@ export default {
   layout: 'general-administration',
   computed: {
     url() {
-      return 'master/knowledge-areas/'
+      return 'master/teaching-areas/'
     },
   },
 }
