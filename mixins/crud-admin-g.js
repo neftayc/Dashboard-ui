@@ -56,7 +56,7 @@ export default {
     },
     '$route.query': '$fetch',
     search(v) {
-      if (v) {
+      if (v.length) {
         this.$router.push({
           query: { search: v, page: this.page ?? 1, size: this.size },
         })
@@ -77,26 +77,30 @@ export default {
       this.item = { ...item }
     },
 
-    async save() {
-      this.loading = true
-      if (this.item.id) {
-        await this.$axios
-          .put(`${this.url}${this.item.id}`, this.item)
-          .then(() => {
-            this.dialog = false
-            this.clear()
-          })
-          .catch(() => {})
-      } else {
-        await this.$axios
-          .post(`${this.url}`, this.item)
-          .then(() => {
-            this.dialog = false
-            this.clear()
-          })
-          .catch(() => {})
-      }
-      this.loading = false
+    save() {
+      this.$refs.form.validate(async (valid) => {
+        if (valid) {
+          this.loading = true
+          if (this.item.id) {
+            await this.$axios
+              .put(`${this.url}${this.item.id}`, this.item)
+              .then(() => {
+                this.dialog = false
+                this.clear()
+              })
+              .catch(() => {})
+          } else {
+            await this.$axios
+              .post(`${this.url}`, this.item)
+              .then(() => {
+                this.dialog = false
+                this.clear()
+              })
+              .catch(() => {})
+          }
+          this.loading = false
+        }
+      })
     },
     deleteItem(id) {
       this.$confirm(

@@ -19,6 +19,7 @@
 import { mapState } from 'vuex'
 export default {
   layout: 'menu',
+
   data: () => ({}),
   computed: {
     ...mapState(['itemsMenu']),

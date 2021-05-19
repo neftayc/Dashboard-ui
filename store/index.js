@@ -4,6 +4,7 @@ export const plugins = [createLogger()]
 export const strict = true
 
 export const state = () => ({
+  db: 'school1',
   itemsMenu: [
     {
       name: 'Administración del Sistema',
