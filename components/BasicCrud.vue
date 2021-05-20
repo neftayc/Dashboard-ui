@@ -26,6 +26,7 @@
       >
         <template slot-scope="scope">
           <el-button
+            v-if="showEdit"
             size="small"
             type="warning"
             icon="el-icon-edit"
@@ -81,6 +82,10 @@ export default {
     total: {
       type: Number,
       default: 0,
+    },
+    showEdit: {
+      type: Boolean,
+      default: true,
     },
   },
 }
