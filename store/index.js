@@ -7,28 +7,28 @@ export const state = () => ({
   db: 'school1',
   itemsMenu: [
     {
-      name: 'Administración del Sistema',
-      path: 'system-administration',
+      name: 'Administración',
+      path: '/admin/knowledge-areas',
       icon: 'el-icon-s-grid',
       children: [
         {
           name: 'Aplicaciones',
-          path: '/system-administration/apps',
+          path: '/admin/knowledge-areas',
           icon: 'el-icon-s-platform',
         },
         {
           name: 'Avisos Profesores',
-          path: '/system-administration/notifications-teachers',
+          path: '/admin/teaching-areas',
           icon: 'el-icon-s-check',
         },
         {
           name: 'Configuración',
-          path: '/system-administration/settings',
+          path: '/admin/entities',
           icon: 'el-icon-setting',
         },
         {
           name: 'Control de Versiones',
-          path: '/system-administration/version-control',
+          path: '/admin/themes',
           icon: 'el-icon-loading',
         },
       ],

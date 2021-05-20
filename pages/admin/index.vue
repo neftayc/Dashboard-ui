@@ -3,5 +3,5 @@
 </template>
 
 <script>
-export default {}
+export default { layout: 'system-administration' }
 </script>

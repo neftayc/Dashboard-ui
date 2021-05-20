@@ -118,7 +118,7 @@ const required = {
 export default {
   components: { BasicCrud },
   mixins: [crud],
-  layout: 'general-administration',
+  layout: 'system-administration',
   data: () => ({
     categories: [],
     rules: {
