@@ -49,9 +49,9 @@
       :close-on-click-modal="false"
       @close="item = {}"
     >
-      <el-form :model="item">
-        <el-form-item label="Nombre">
-          <el-input v-model="item.name" autocomplete="off"></el-input>
+      <el-form ref="form" :model="item" :rules="rules">
+        <el-form-item label="Nombre" prop="name">
+          <el-input v-model="item.name"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -67,10 +67,20 @@
 <script>
 import crud from '@/mixins/crud-admin-g'
 import BasicCrud from '@/components/BasicCrud'
+const required = {
+  required: true,
+  message: 'Campo requerido',
+  trigger: 'blur',
+}
 export default {
   components: { BasicCrud },
   mixins: [crud],
   layout: 'general-administration',
+  data: () => ({
+    rules: {
+      name: [required],
+    },
+  }),
   computed: {
     url() {
       return 'master/teaching-areas/'

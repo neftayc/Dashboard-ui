@@ -40,6 +40,10 @@
       </template>
       <template #columns>
         <el-table-column prop="name" label="Nombre" />
+        <el-table-column prop="cif" label="CIF" />
+        <el-table-column prop="acronym" label="Acrónimo" />
+        <el-table-column prop="category.name" label="Categoría" />
+        <el-table-column prop="type.name" label="Tipo" />
       </template>
     </BasicCrud>
 
@@ -49,19 +53,46 @@
       :close-on-click-modal="false"
       @close="item = {}"
     >
-      <el-form :model="item">
-        <el-form-item label="Nombre*">
+      <el-form ref="form" :model="item" :rules="rules">
+        <el-form-item label="Nombre" prop="name">
           <el-input v-model="item.name"></el-input>
         </el-form-item>
         <el-row class="mt-10" :gutter="20">
           <el-col :xs="24" :md="12">
-            <el-form-item label="CIF">
+            <el-form-item label="CIF" prop="cif">
               <el-input v-model="item.cif"></el-input>
             </el-form-item>
           </el-col>
           <el-col :xs="24" :md="12">
-            <el-form-item label="Acrónimo">
+            <el-form-item label="Acrónimo" prop="acronym">
               <el-input v-model="item.acronym"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :xs="24" :md="12">
+            <el-form-item label="Tipo" prop="category">
+              <el-select v-model="item.category" value-key="id">
+                <el-option
+                  v-for="item in categories"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item"
+                  :value-key="item.id"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :xs="24" :md="12">
+            <el-form-item label="Categoría" prop="category">
+              <el-select v-model="item.type" value-key="id">
+                <el-option
+                  v-for="item in categories"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item"
+                >
+                </el-option>
+              </el-select>
             </el-form-item>
           </el-col>
         </el-row>
@@ -79,13 +110,41 @@
 <script>
 import crud from '@/mixins/crud-admin-g'
 import BasicCrud from '@/components/BasicCrud'
+const required = {
+  required: true,
+  message: 'Campo requerido',
+  trigger: 'blur',
+}
 export default {
   components: { BasicCrud },
   mixins: [crud],
   layout: 'general-administration',
+  data: () => ({
+    categories: [],
+    rules: {
+      name: [required],
+      type: [required],
+      cif: [required],
+      acronym: [required],
+      category: [required],
+    },
+  }),
   computed: {
     url() {
       return 'master/entities/'
+    },
+  },
+  created() {
+    this.getEntities()
+  },
+  methods: {
+    getEntities() {
+      this.$axios
+        .get(`constants/entities/`)
+        .then((x) => {
+          this.categories = x.data
+        })
+        .catch(() => {})
     },
   },
 }
