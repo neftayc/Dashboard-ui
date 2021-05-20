@@ -69,10 +69,10 @@
             </el-form-item>
           </el-col>
           <el-col :xs="24" :md="12">
-            <el-form-item label="Tipo" prop="category">
+            <el-form-item label="Tipo" prop="type">
               <el-select v-model="item.category" value-key="id">
                 <el-option
-                  v-for="item in categories"
+                  v-for="item in types"
                   :key="item.id"
                   :label="item.name"
                   :value="item"
@@ -120,6 +120,7 @@ export default {
   mixins: [crud],
   layout: 'system-administration',
   data: () => ({
+    types: [],
     categories: [],
     rules: {
       name: [required],
@@ -136,11 +137,20 @@ export default {
   },
   created() {
     this.getEntities()
+    this.getCategories()
   },
   methods: {
     getEntities() {
       this.$axios
         .get(`constants/entities/`)
+        .then((x) => {
+          this.types = x.data
+        })
+        .catch(() => {})
+    },
+    getCategories() {
+      this.$axios
+        .get(`constants/categories/`)
         .then((x) => {
           this.categories = x.data
         })
