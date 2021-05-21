@@ -14,7 +14,11 @@ export default {
   css: ['element-ui/lib/theme-chalk/index.css', '@/assets/base.scss'],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: ['@/plugins/element-ui', '@/plugins/axios'],
+  plugins: [
+    '@/plugins/element-ui',
+    '@/plugins/axios',
+    { src: '@/plugins/vmask', mode: 'client' },
+  ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,

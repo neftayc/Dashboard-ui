@@ -6,7 +6,10 @@
       :items="items"
       :loading="$fetchState.pending"
       :total="pagination.num_results || 0"
-      @add="dialog = true"
+      @add="
+        dialog = true
+        item = {}
+      "
       @edit="editItem($event.row)"
       @delete="deleteItem($event.row.id)"
     >
@@ -43,44 +46,25 @@
       </template>
     </BasicCrud>
 
-    <el-dialog
-      :title="`${item.id ? 'Editando' : 'Creando'} Área`"
-      :visible.sync="dialog"
-      :close-on-click-modal="false"
-      @close="item = {}"
-    >
-      <el-form ref="form" :model="item" :rules="rules">
-        <el-form-item label="Nombre" prop="name">
-          <el-input v-model="item.name"></el-input>
-        </el-form-item>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialog = false">Cancelar</el-button>
-        <el-button type="primary" :loading="loading" @click="save">
-          Guardar
-        </el-button>
-      </span>
-    </el-dialog>
+    <AreaForm
+      v-if="dialog"
+      :dialog.sync="dialog"
+      :data="item"
+      :loading="loading"
+      @save="save({ ...$event })"
+    ></AreaForm>
   </div>
 </template>
 
 <script>
 import crud from '@/mixins/crud-admin-g'
 import BasicCrud from '@/components/BasicCrud'
-const required = {
-  required: true,
-  message: 'Campo requerido',
-  trigger: 'blur',
-}
+import AreaForm from '@/components/forms/AreaForm'
+
 export default {
-  components: { BasicCrud },
+  components: { BasicCrud, AreaForm },
   mixins: [crud],
   layout: 'system-administration',
-  data: () => ({
-    rules: {
-      name: [required],
-    },
-  }),
   computed: {
     url() {
       return 'master/knowledge-areas/'

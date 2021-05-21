@@ -77,30 +77,28 @@ export default {
       this.item = { ...item }
     },
 
-    save() {
-      this.$refs.form.validate(async (valid) => {
-        if (valid) {
-          this.loading = true
-          if (this.item.id) {
-            await this.$axios
-              .put(`${this.url}${this.item.id}`, this.item)
-              .then(() => {
-                this.dialog = false
-                this.clear()
-              })
-              .catch(() => {})
-          } else {
-            await this.$axios
-              .post(`${this.url}`, this.item)
-              .then(() => {
-                this.dialog = false
-                this.clear()
-              })
-              .catch(() => {})
-          }
-          this.loading = false
-        }
-      })
+    async save(data) {
+      this.item = { ...data }
+
+      this.loading = true
+      if (this.item.id) {
+        await this.$axios
+          .put(`${this.url}${this.item.id}`, this.item)
+          .then(() => {
+            this.dialog = false
+            this.clear()
+          })
+          .catch(() => {})
+      } else {
+        await this.$axios
+          .post(`${this.url}`, this.item)
+          .then(() => {
+            this.dialog = false
+            this.clear()
+          })
+          .catch(() => {})
+      }
+      this.loading = false
     },
     deleteItem(id) {
       this.$confirm(
