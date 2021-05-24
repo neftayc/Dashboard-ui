@@ -59,11 +59,11 @@
       :title="`${item.id ? 'Editando' : 'Seleccionando'} Áreas de Conocimiento`"
       :visible.sync="dialogTranfer"
       :close-on-click-modal="false"
-      @close="item = {}"
       append-to-body
       width="90%"
+      @close="item = {}"
     >
-      <el-button class="s-pb-3" @click="dialog = true" size="small">
+      <el-button class="s-pb-3" size="small" @click="dialog = true">
         Crear
       </el-button>
 
@@ -112,61 +112,16 @@ export default {
   components: { BasicCrud, AreaForm },
   mixins: [crud],
   layout: 'general-administration',
-  data: () => ({
-    selects: [],
-    dialogTranfer: false,
-    items2: [],
-    renderFunc(h, option) {
-      return <span> {option.name}</span>
-    },
-  }),
 
   computed: {
+    model() {
+      return 'KnowledgeArea'
+    },
+    masterUrl() {
+      return 'master/knowledge-areas/'
+    },
     url() {
       return 'school1/core/knowledge-areas/'
-    },
-  },
-
-  mounted() {
-    this.getMaster()
-  },
-  methods: {
-    async saveMaster(v) {
-      await this.save({ ...v })
-      this.getMaster()
-
-      setTimeout(() => {
-        this.setSelects()
-      }, 100)
-    },
-    async getMaster() {
-      await this.$axios
-        .get('master/knowledge-areas/', { params: { page_size: 100 } })
-        .then((x) => {
-          this.items2 = x.data.results
-        })
-        .catch((_) => {})
-    },
-    async saveList() {
-      this.loading = true
-      await this.$axios
-        .post(`/school1/core/list_update/`, {
-          model: 'KnowledgeArea',
-          elem_list: this.selects.map((x) => ({
-            id: x,
-            ...this.items2.find((y) => y.id === x),
-          })),
-        })
-        .then((x) => {
-          this.dialogTranfer = false
-
-          this.clear()
-        })
-        .catch((_) => {})
-      this.loading = false
-    },
-    setSelects() {
-      this.selects = this.items.map((x) => x.global_id)
     },
   },
 }
