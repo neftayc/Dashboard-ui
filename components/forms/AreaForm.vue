@@ -3,11 +3,11 @@
     :title="`${item.id ? 'Editando' : 'Creando'} Área`"
     :visible="dialog"
     :close-on-click-modal="false"
+    append-to-body
     @close="
       item = {}
       $emit('update:dialog', false)
     "
-    append-to-body
   >
     <el-form ref="form" :model="item" :rules="rules" label-position="top">
       <el-form-item label="Nombre" prop="name">

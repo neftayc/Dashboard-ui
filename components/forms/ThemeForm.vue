@@ -1,8 +1,9 @@
 <template>
   <el-dialog
-    :title="`${item.id ? 'Editando' : 'Creando'} Área`"
+    :title="`${item.id ? 'Editando' : 'Creando'} Theme`"
     :visible="dialog"
     :close-on-click-modal="false"
+    append-to-body
     @close="
       item = {}
       $emit('update:dialog', false)

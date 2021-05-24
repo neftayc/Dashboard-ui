@@ -44,7 +44,7 @@
       <template #columns>
         <el-table-column prop="name" label="Nombre" />
         <el-table-column prop="abbreviated_name" label="Nombre abreviado" />
-        <el-table-column prop="duration" label="Nombre abreviado" />
+        <el-table-column prop="duration" label="Duración" />
       </template>
     </BasicCrud>
 
@@ -62,22 +62,10 @@
 import crud from '@/mixins/crud-admin-g'
 import BasicCrud from '@/components/BasicCrud'
 import ThemeForm from '@/components/forms/ThemeForm'
-const required = {
-  required: true,
-  message: 'Campo requerido',
-  trigger: 'blur',
-}
 export default {
   components: { BasicCrud, ThemeForm },
   mixins: [crud],
   layout: 'system-administration',
-  data: () => ({
-    rules: {
-      name: [required],
-      duration: [required],
-      abbreviated_name: [required],
-    },
-  }),
   computed: {
     url() {
       return 'master/topics/'
