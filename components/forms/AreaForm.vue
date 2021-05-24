@@ -7,6 +7,7 @@
       item = {}
       $emit('update:dialog', false)
     "
+    append-to-body
   >
     <el-form ref="form" :model="item" :rules="rules" label-position="top">
       <el-form-item label="Nombre" prop="name">

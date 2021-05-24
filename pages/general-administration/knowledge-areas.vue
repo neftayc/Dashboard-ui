@@ -6,9 +6,11 @@
       :items="items"
       :loading="$fetchState.pending"
       :total="pagination.num_results || 0"
-      :show-edit="false"
       :add-btn-text="!items.length ? 'Agregar' : 'Editar'"
-      @add="dialog = true"
+      @add="
+        dialogTranfer = true
+        setSelects()
+      "
       @edit="editItem($event.row)"
       @delete="deleteItem($event.row.id)"
     >
@@ -45,23 +47,46 @@
       </template>
     </BasicCrud>
 
+    <AreaForm
+      v-if="dialog"
+      :dialog.sync="dialog"
+      :data="item"
+      :loading="loading"
+      @save="save({ ...$event })"
+    ></AreaForm>
+
     <el-dialog
       :title="`${item.id ? 'Editando' : 'Seleccionado'} Áreas de Conocimiento`"
-      :visible.sync="dialog"
+      :visible.sync="dialogTranfer"
       :close-on-click-modal="false"
       @close="item = {}"
+      append-to-body
+      width="90%"
     >
+      <el-button class="s-pb-3" @click="dialog = true" size="small">
+        Crear
+      </el-button>
+
+      <AreaForm
+        v-if="dialog"
+        :dialog.sync="dialog"
+        :data="item"
+        :loading="loading"
+        @save="saveMaster"
+      ></AreaForm>
+
       <el-transfer
-        v-model="value"
+        v-model="selects"
         class="main-transfer"
         filterable
+        :props="{
+          key: 'id',
+          label: 'name',
+        }"
         :render-content="renderFunc"
-        :titles="[
-          'Áreas de conocimiento disponible',
-          'Áreas de conocimiento elegidos',
-        ]"
+        :titles="['disponible', 'Seleccionados']"
         :button-texts="['', '']"
-        :data="knowledgeAreasGlobal"
+        :data="items2"
         :format="{
           noChecked: '${total}',
           hasChecked: '${checked}/${total}',
@@ -70,7 +95,7 @@
       </el-transfer>
 
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialog = false">Cancelar</el-button>
+        <el-button @click="dialogTranfer = false">Cancelar</el-button>
         <el-button type="primary" :loading="loading" @click="saveList()">
           Guardar
         </el-button>
@@ -82,81 +107,73 @@
 <script>
 import crud from '@/mixins/crud-admin-g'
 import BasicCrud from '@/components/BasicCrud'
+import AreaForm from '@/components/forms/AreaForm'
 export default {
-  components: { BasicCrud },
+  components: { BasicCrud, AreaForm },
   mixins: [crud],
   layout: 'general-administration',
-  data() {
-    return {
-      value: [1],
-      knowledgeAreasGlobal: [],
-      renderFunc(h, option) {
-        return <span> {option.name}</span>
-      },
-    }
-  },
+  data: () => ({
+    selects: [],
+    dialogTranfer: false,
+    items2: [],
+    renderFunc(h, option) {
+      return <span> {option.name}</span>
+    },
+  }),
 
   computed: {
     url() {
       return 'school1/core/knowledge-areas/'
     },
   },
-  watch: {
-    items(v) {
-      this.editList()
-    },
-  },
-  async mounted() {
-    this.item = { elements: [] }
-    await this.$axios
-      .get('master/knowledge-areas/', { params: { page_size: 100 } })
-      .then((x) => {
-        this.knowledgeAreasGlobal = JSON.parse(
-          JSON.stringify(
-            x.data.results.map((x, i) => ({
-              ...x,
-              label: x.name,
-              key: i + 1,
-              disabled: false,
-            }))
-          )
-        )
-        setTimeout(() => {
-          this.editList()
-        }, 3000)
-      })
-      .catch((_) => {})
+
+  mounted() {
+    this.getMaster()
   },
   methods: {
-    saveList() {
-      for (let i = 0; i < this.value.length; i++) {
-        const element = this.value[i]
-        this.$axios
-          .post(
-            this.url,
-            this.knowledgeAreasGlobal.find((x) => x.key === element)
-          )
-          .then((x) => {
-            this.dialog = false
-            this.clear()
-          })
-          .catch((_) => {})
-      }
+    async saveMaster(v) {
+      await this.save({ ...v })
+      this.getMaster()
+
+      setTimeout(() => {
+        this.setSelects()
+      }, 100)
     },
-    editList() {
-      this.value = []
-      this.items.forEach((element) => {
-        const index = this.knowledgeAreasGlobal.find(
-          (x) => x.id === element.global_id
-        )
-        this.value.push(index.key)
-      })
+    async getMaster() {
+      await this.$axios
+        .get('master/knowledge-areas/', { params: { page_size: 100 } })
+        .then((x) => {
+          this.items2 = x.data.results
+        })
+        .catch((_) => {})
+    },
+    async saveList() {
+      this.loading = true
+      await this.$axios
+        .post(`/school1/core/list_update/`, {
+          model: 'KnowledgeArea',
+          elem_list: this.selects.map((x) => ({
+            id: x,
+            ...this.items2.find((y) => y.id === x),
+          })),
+        })
+        .then((x) => {
+          this.dialogTranfer = false
+
+          this.clear()
+        })
+        .catch((_) => {})
+      this.loading = false
+    },
+    setSelects() {
+      this.selects = this.items.map((x) => x.global_id)
     },
   },
 }
 </script>
 <style lang="scss">
 .main-transfer {
+  margin-top: 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
