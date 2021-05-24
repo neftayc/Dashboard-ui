@@ -56,7 +56,7 @@
     ></AreaForm>
 
     <el-dialog
-      :title="`${item.id ? 'Editando' : 'Seleccionado'} Áreas de Conocimiento`"
+      :title="`${item.id ? 'Editando' : 'Seleccionando'} Áreas de Conocimiento`"
       :visible.sync="dialogTranfer"
       :close-on-click-modal="false"
       @close="item = {}"
