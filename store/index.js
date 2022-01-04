@@ -12,22 +12,22 @@ export const state = () => ({
       icon: 'el-icon-s-grid',
       children: [
         {
-          name: 'Aplicaciones',
+          name: 'Áreas de Conocimiento',
           path: '/admin/knowledge-areas',
           icon: 'el-icon-s-platform',
         },
         {
-          name: 'Avisos Profesores',
+          name: 'Áreas de Impartición',
           path: '/admin/teaching-areas',
           icon: 'el-icon-s-check',
         },
         {
-          name: 'Configuración',
+          name: 'Entidades',
           path: '/admin/entities',
           icon: 'el-icon-setting',
         },
         {
-          name: 'Control de Versiones',
+          name: 'Temas',
           path: '/admin/themes',
           icon: 'el-icon-loading',
         },

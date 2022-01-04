@@ -90,4 +90,5 @@ export default {
   build: {
     transpile: [/^element-ui/],
   },
+  serverMiddleware: { '/api': '~/api' },
 }
