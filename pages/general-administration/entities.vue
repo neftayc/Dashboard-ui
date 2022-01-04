@@ -6,9 +6,11 @@
       :items="items"
       :loading="$fetchState.pending"
       :total="pagination.num_results || 0"
-      :show-edit="false"
       :add-btn-text="!items.length ? 'Agregar' : 'Editar'"
-      @add="dialog = true"
+      @add="
+        dialogTranfer = true
+        setSelects()
+      "
       @edit="editItem($event.row)"
       @delete="deleteItem($event.row.id)"
     >
@@ -42,23 +44,47 @@
       </template>
       <template #columns>
         <el-table-column prop="name" label="Nombre" />
+        <el-table-column prop="cif" label="CIF" />
+        <el-table-column prop="acronym" label="Acrónimo" />
+        <el-table-column prop="category.name" label="Categoría" />
+        <el-table-column prop="type.name" label="Tipo" />
       </template>
     </BasicCrud>
 
+    <EntityForm
+      v-if="dialog"
+      :dialog.sync="dialog"
+      :data="item"
+      :loading="loading"
+      @save="saveMaster"
+    ></EntityForm>
     <el-dialog
-      :title="`${item.id ? 'Editando' : 'Seleccionado'} Entidades`"
-      :visible.sync="dialog"
+      :title="`${item.id ? 'Editando' : 'Seleccionando'} Entidades`"
+      :visible.sync="dialogTranfer"
       :close-on-click-modal="false"
+      append-to-body
+      width="90%"
       @close="item = {}"
     >
+      <EntityForm
+        v-if="dialog"
+        :dialog.sync="dialog"
+        :data="item"
+        :loading="loading"
+        @save="saveMaster"
+      ></EntityForm>
       <el-transfer
-        v-model="value"
+        v-model="selects"
         class="main-transfer"
         filterable
+        :props="{
+          key: 'id',
+          label: 'name',
+        }"
         :render-content="renderFunc"
         :titles="['Entidades disponible', 'Entidades elegidos']"
         :button-texts="['', '']"
-        :data="entitiesGlobal"
+        :data="items2"
         :format="{
           noChecked: '${total}',
           hasChecked: '${checked}/${total}',
@@ -67,7 +93,7 @@
       </el-transfer>
 
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialog = false">Cancelar</el-button>
+        <el-button @click="dialogTranfer = false">Cancelar</el-button>
         <el-button type="primary" :loading="loading" @click="saveList()">
           Guardar
         </el-button>
@@ -78,86 +104,30 @@
 
 <script>
 import crud from '@/mixins/crud-admin-g'
+import transfers from '@/mixins/transfers'
 import BasicCrud from '@/components/BasicCrud'
+import EntityForm from '@/components/forms/EntityForm'
 export default {
-  components: { BasicCrud },
-  mixins: [crud],
+  components: { BasicCrud, EntityForm },
+  mixins: [crud, transfers],
   layout: 'general-administration',
-  data() {
-    return {
-      value: [1],
-      entitiesGlobal: [],
-      renderFunc(h, option) {
-        return <span> {option.name}</span>
-      },
-    }
-  },
 
   computed: {
-    url() {
+    model() {
+      return 'Entity'
+    },
+    masterUrl() {
       return 'master/entities/'
     },
-  },
-  watch: {
-    items(v) {
-      this.editList()
-    },
-  },
-  async mounted() {
-    this.item = { elements: [] }
-    await this.$axios
-      .get('master/entities/', { params: { page_size: 100 } })
-      .then((x) => {
-        this.entitiesGlobal = JSON.parse(
-          JSON.stringify(
-            x.data.results.map((x, i) => ({
-              ...x,
-              label: x.name,
-              key: i + 1,
-              disabled: false,
-            }))
-          )
-        )
-        setTimeout(() => {
-          this.editList()
-        }, 3000)
-      })
-      .catch((_) => {})
-  },
-  methods: {
-    saveList() {
-      for (let i = 0; i < this.value.length; i++) {
-        const element = this.value[i]
-        this.$axios
-          .post(
-            this.url,
-            this.entitiesGlobal.find((x) => x.key === element)
-          )
-          .then((x) => {
-            this.dialog = false
-            this.clear()
-          })
-          .catch((e) => {
-            console.log(e)
-          })
-      }
-    },
-    editList() {
-      this.value = []
-      this.items.forEach((element) => {
-        const index = this.entitiesGlobal.find(
-          (x) => x.id === element.global_id
-        )
-        if (index) {
-          this.value.push(index.key)
-        }
-      })
+    url() {
+      return 'school1/core/entities/'
     },
   },
 }
 </script>
 <style lang="scss">
 .main-transfer {
+  margin-top: 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;

@@ -6,7 +6,11 @@
       :items="items"
       :loading="$fetchState.pending"
       :total="pagination.num_results || 0"
-      @add="dialog = true"
+      :add-btn-text="!items.length ? 'Agregar' : 'Editar'"
+      @add="
+        dialogTranfer = true
+        setSelects()
+      "
       @edit="editItem($event.row)"
       @delete="deleteItem($event.row.id)"
     >
@@ -40,35 +44,61 @@
       </template>
       <template #columns>
         <el-table-column prop="name" label="Nombre" />
+        <el-table-column prop="abbreviated_name" label="Nombre abreviado" />
+        <el-table-column prop="duration" label="Duración" />
       </template>
     </BasicCrud>
 
+    <ThemeForm
+      v-if="dialog"
+      :dialog.sync="dialog"
+      :data="item"
+      :loading="loading"
+      @save="save({ ...$event })"
+    ></ThemeForm>
+
     <el-dialog
-      :title="`${item.id ? 'Editando' : 'Creando'} Tema`"
-      :visible.sync="dialog"
+      :title="`${item.id ? 'Editando' : 'Seleccionando'} Temas`"
+      :visible.sync="dialogTranfer"
       :close-on-click-modal="false"
+      append-to-body
+      width="90%"
       @close="item = {}"
     >
-      <el-form :model="item">
-        <el-form-item label="Nombre*">
-          <el-input v-model="item.name"></el-input>
-        </el-form-item>
-        <el-row class="mt-10" :gutter="20">
-          <el-col :xs="24" :md="12">
-            <el-form-item label="Nombre abreviado">
-              <el-input v-model="item.abbreviated_name"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :xs="24" :md="12">
-            <el-form-item label="Duración">
-              <el-input v-model="item.duration" type="number"></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-      </el-form>
+      <el-button class="s-pb-3" size="small" @click="dialog = true">
+        Crear
+      </el-button>
+
+      <ThemeForm
+        v-if="dialog"
+        :dialog.sync="dialog"
+        :data="item"
+        :loading="loading"
+        @save="saveMaster"
+      ></ThemeForm>
+
+      <el-transfer
+        v-model="selects"
+        class="main-transfer"
+        filterable
+        :props="{
+          key: 'id',
+          label: 'name',
+        }"
+        :render-content="renderFunc"
+        :titles="['disponible', 'Seleccionados']"
+        :button-texts="['', '']"
+        :data="items2"
+        :format="{
+          noChecked: '${total}',
+          hasChecked: '${checked}/${total}',
+        }"
+      >
+      </el-transfer>
+
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialog = false">Cancelar</el-button>
-        <el-button type="primary" :loading="loading" @click="save">
+        <el-button @click="dialogTranfer = false">Cancelar</el-button>
+        <el-button type="primary" :loading="loading" @click="saveList()">
           Guardar
         </el-button>
       </span>
@@ -78,15 +108,48 @@
 
 <script>
 import crud from '@/mixins/crud-admin-g'
+import transfers from '@/mixins/transfers'
 import BasicCrud from '@/components/BasicCrud'
+import ThemeForm from '@/components/forms/ThemeForm'
 export default {
-  components: { BasicCrud },
-  mixins: [crud],
+  components: { BasicCrud, ThemeForm },
+  mixins: [crud, transfers],
   layout: 'general-administration',
   computed: {
-    url() {
+    model() {
+      return 'Topic'
+    },
+    masterUrl() {
       return 'master/topics/'
+    },
+    url() {
+      return 'school1/core/topics/'
     },
   },
 }
 </script>
+<style lang="scss">
+.main-transfer {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  & > .el-transfer-panel {
+    width: 40% !important;
+  }
+  & > .el-transfer__buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    & button {
+      margin: 0 !important;
+      width: 28px;
+      padding-left: 6px;
+    }
+    button + button {
+      margin-left: 2px !important;
+    }
+  }
+}
+</style>

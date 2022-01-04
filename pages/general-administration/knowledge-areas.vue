@@ -6,9 +6,11 @@
       :items="items"
       :loading="$fetchState.pending"
       :total="pagination.num_results || 0"
-      :show-edit="false"
       :add-btn-text="!items.length ? 'Agregar' : 'Editar'"
-      @add="dialog = true"
+      @add="
+        dialogTranfer = true
+        setSelects()
+      "
       @edit="editItem($event.row)"
       @delete="deleteItem($event.row.id)"
     >
@@ -45,23 +47,46 @@
       </template>
     </BasicCrud>
 
+    <AreaForm
+      v-if="dialog"
+      :dialog.sync="dialog"
+      :data="item"
+      :loading="loading"
+      @save="save({ ...$event })"
+    ></AreaForm>
+
     <el-dialog
-      :title="`${item.id ? 'Editando' : 'Seleccionado'} Áreas de Conocimiento`"
-      :visible.sync="dialog"
+      :title="`${item.id ? 'Editando' : 'Seleccionando'} Áreas de Conocimiento`"
+      :visible.sync="dialogTranfer"
       :close-on-click-modal="false"
+      append-to-body
+      width="90%"
       @close="item = {}"
     >
+      <el-button class="s-pb-3" size="small" @click="dialog = true">
+        Crear
+      </el-button>
+
+      <AreaForm
+        v-if="dialog"
+        :dialog.sync="dialog"
+        :data="item"
+        :loading="loading"
+        @save="saveMaster"
+      ></AreaForm>
+
       <el-transfer
-        v-model="value"
+        v-model="selects"
         class="main-transfer"
         filterable
+        :props="{
+          key: 'id',
+          label: 'name',
+        }"
         :render-content="renderFunc"
-        :titles="[
-          'Áreas de conocimiento disponible',
-          'Áreas de conocimiento elegidos',
-        ]"
+        :titles="['disponible', 'Seleccionados']"
         :button-texts="['', '']"
-        :data="knowledgeAreasGlobal"
+        :data="items2"
         :format="{
           noChecked: '${total}',
           hasChecked: '${checked}/${total}',
@@ -70,7 +95,7 @@
       </el-transfer>
 
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialog = false">Cancelar</el-button>
+        <el-button @click="dialogTranfer = false">Cancelar</el-button>
         <el-button type="primary" :loading="loading" @click="saveList()">
           Guardar
         </el-button>
@@ -82,81 +107,28 @@
 <script>
 import crud from '@/mixins/crud-admin-g'
 import BasicCrud from '@/components/BasicCrud'
+import AreaForm from '@/components/forms/AreaForm'
 export default {
-  components: { BasicCrud },
+  components: { BasicCrud, AreaForm },
   mixins: [crud],
   layout: 'general-administration',
-  data() {
-    return {
-      value: [1],
-      knowledgeAreasGlobal: [],
-      renderFunc(h, option) {
-        return <span> {option.name}</span>
-      },
-    }
-  },
 
   computed: {
+    model() {
+      return 'KnowledgeArea'
+    },
+    masterUrl() {
+      return 'master/knowledge-areas/'
+    },
     url() {
       return 'school1/core/knowledge-areas/'
-    },
-  },
-  watch: {
-    items(v) {
-      this.editList()
-    },
-  },
-  async mounted() {
-    this.item = { elements: [] }
-    await this.$axios
-      .get('master/knowledge-areas/', { params: { page_size: 100 } })
-      .then((x) => {
-        this.knowledgeAreasGlobal = JSON.parse(
-          JSON.stringify(
-            x.data.results.map((x, i) => ({
-              ...x,
-              label: x.name,
-              key: i + 1,
-              disabled: false,
-            }))
-          )
-        )
-        setTimeout(() => {
-          this.editList()
-        }, 3000)
-      })
-      .catch((_) => {})
-  },
-  methods: {
-    saveList() {
-      for (let i = 0; i < this.value.length; i++) {
-        const element = this.value[i]
-        this.$axios
-          .post(
-            this.url,
-            this.knowledgeAreasGlobal.find((x) => x.key === element)
-          )
-          .then((x) => {
-            this.dialog = false
-            this.clear()
-          })
-          .catch((_) => {})
-      }
-    },
-    editList() {
-      this.value = []
-      this.items.forEach((element) => {
-        const index = this.knowledgeAreasGlobal.find(
-          (x) => x.id === element.global_id
-        )
-        this.value.push(index.key)
-      })
     },
   },
 }
 </script>
 <style lang="scss">
 .main-transfer {
+  margin-top: 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
